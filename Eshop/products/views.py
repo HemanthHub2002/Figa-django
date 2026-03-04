@@ -33,6 +33,13 @@ def searchProducts(request):
             Q(desc__icontains = query) 
         )
         
+        # Exclude t-shirts when searching specifically for shirts
+        if query.lower() == 'shirt':
+            search_results = search_results.exclude(
+                Q(title__icontains='t-shirt') | Q(title__icontains='tshirt') | 
+                Q(desc__icontains='t-shirt') | Q(desc__icontains='tshirt')
+            )
+        
         context = {
             'query' : query,
             'products' : search_results
