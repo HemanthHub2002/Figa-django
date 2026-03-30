@@ -1,0 +1,144 @@
+<header class="sticky-top">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+
+            <!-- BRAND -->
+            <a class="navbar-brand"
+                href="{% url 'home_page' %}">
+                FIGHA
+            </a>
+
+            <!-- MOBILE TOGGLER -->
+            <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <!-- LEFT NAV LINKS -->
+                <ul class="navbar-nav me-3 mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'home' %}active{% endif %}"
+                            href="{% url 'home_page' %}">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'about' %}active{% endif %}"
+                            href="{% url 'about_page' %}">About</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'contact' %}active{% endif %}"
+                            href="{% url 'contact_page' %}">Contact</a>
+                    </li>
+
+                    {% if not user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'products' %}active{% endif %}"
+                            href="{% url 'products' %}">Shop</a>
+                    </li>
+                    {% endif %}
+
+                    {% if user.is_staff %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#"
+                            data-bs-toggle="dropdown">
+                            Manage
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item"
+                                    href="{% url 'products' %}">
+                                    <i class="bi bi-box-seam me-2"></i>Products</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{% url 'carousel_list' %}">
+                                    <i class="bi bi-images me-2"></i>Carousels</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{% url 'admin_manage_orders' %}">
+                                    <i class="bi bi-receipt me-2"></i>Orders</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <!-- 🔍 SEARCH BAR -->
+                <form class="d-flex flex-grow-1 mx-lg-3"
+                    method="get"
+                    action="{% url 'search_products' %}">
+
+                    <input name="q"
+                        value="{{ query }}"
+                        class="form-control"
+                        type="search"
+                        placeholder="Search cameras, lenses, accessories..."
+                        aria-label="Search">
+
+                    <button class="btn" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+
+                <!-- RIGHT SIDE -->
+                <ul class="navbar-nav ms-auto align-items-center mb-2 mb-lg-0">
+
+                    <!-- 🛒 CART -->
+                    <li class="nav-item me-3 position-relative">
+                        <a class="nav-link" href="{% url 'view_cart' %}">
+                            <i class="bi bi-bag fs-5"></i>
+                            {% if user.is_authenticated %}
+                            <span class="cart-badge" id="cart-count" data-count-url="{% url 'cart_count' %}">0</span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <!-- 👤 ACCOUNT -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center"
+                            href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1 fs-5"></i>
+                            {% if user.is_authenticated %}
+                            {{ user.username|truncatechars:12 }}
+                            {% else %}
+                            Account
+                            {% endif %}
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            {% if user.is_authenticated %}
+                            {% if not user.is_staff %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'order_history' %}">
+                                    <i class="bi bi-bag-check me-2"></i>My Orders
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            {% endif %}
+                            <li>
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="dropdown-item text-danger">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                    </button>
+                                </form>
+                            </li>
+                            {% else %}
+                            <li><a class="dropdown-item"
+                                    href="{% url 'signup' %}">
+                                    <i class="bi bi-person-plus me-2"></i>Register</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{% url 'signin' %}">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Login</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</header>

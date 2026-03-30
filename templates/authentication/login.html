@@ -1,0 +1,131 @@
+{% extends 'base/base.html' %}
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+
+<section class="p-5" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&q=80&w=2070') no-repeat center center/cover; min-height: 80vh; display: flex; align-items: center;">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <style>
+                .auth-card {
+                    background-color: #f5f6f8;
+                    border-radius: 30px;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                    padding: 20px;
+                }
+                .auth-icon {
+                    font-size: 64px;
+                    color: #b28e5e;
+                    line-height: 1;
+                }
+                .auth-title {
+                    font-weight: 700;
+                    color: #1a1d24;
+                    font-size: 28px;
+                    margin-top: 15px;
+                }
+                .auth-subtitle {
+                    color: #636876;
+                    font-size: 15px;
+                    margin-bottom: 35px;
+                }
+                .auth-form label {
+                    color: #1a1d24;
+                    font-weight: 500;
+                    font-size: 14px;
+                    margin-bottom: 8px;
+                }
+                .auth-form .form-control {
+                    border-radius: 12px;
+                    border: 1px solid #e1e4e8;
+                    padding: 12px 18px;
+                    background-color: #fcfcfd;
+                    box-shadow: none;
+                    font-size: 15px;
+                }
+                .auth-form .form-control:focus {
+                    border-color: #b28e5e;
+                    box-shadow: 0 0 0 0.2rem rgba(178, 142, 94, 0.25);
+                }
+                .auth-btn {
+                    background-color: #b28e5e;
+                    border: none;
+                    border-radius: 20px;
+                    color: #111;
+                    padding: 14px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                    margin-top: 15px;
+                }
+                .auth-btn:hover {
+                    background-color: #a07a4a;
+                    color: #000;
+                }
+                .auth-bottom-text {
+                    color: #636876;
+                    font-size: 15px;
+                    margin-top: 25px;
+                }
+                .auth-link {
+                    color: #b28e5e;
+                    text-decoration: none;
+                    font-weight: 600;
+                }
+                .auth-link:hover {
+                    color: #a07a4a;
+                    text-decoration: underline;
+                }
+            </style>
+
+            <div class="card border-0 auth-card">
+                <div class="card-body p-sm-4">
+                    <div class="text-center">
+                        <i class="bi bi-person-circle auth-icon"></i>
+                        <h3 class="auth-title">Welcome Back</h3>
+                        <p class="auth-subtitle">Sign in to your account</p>
+                    </div>
+                    <form method="post" class="auth-form">
+                        {% csrf_token %}
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger" style="border-radius: 12px;">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label class="form-label d-block text-start">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                <div class="text-danger small mt-1 text-start">
+                                    <i class="bi bi-exclamation-circle me-1"></i>{{ field.errors | striptags }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        
+                        <button type="submit" class="btn w-100 auth-btn">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Login
+                        </button>
+                        
+                        <div class="text-center auth-bottom-text">
+                            <p class="mb-2">
+                                Don't have an account? 
+                                <a href="{% url 'signup' %}" class="auth-link">Sign up</a>
+                            </p>
+                            <p class="mb-0">
+                                <a href="{% url 'send_otp' %}" class="auth-link">Forgot Password?</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

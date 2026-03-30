@@ -1,7 +1,0 @@
-Django==4.2.27
-gunicorn
-python-decouple
-whitenoise
-pillow
-razorpay
-requests

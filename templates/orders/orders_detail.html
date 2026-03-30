@@ -1,0 +1,116 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}
+Order Details - Order #{{ order.id }}
+{% endblock %}
+
+{% block content %}
+<section class="order_details py-4">
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0"><i class="bi bi-receipt me-2"></i>Order Details</h2>
+            {% if order.status == 'COMPLETED' %}
+            <a href="{% url 'order_invoice' order.id %}" target="_blank" class="btn btn-sm btn-outline-warning">
+                <i class="bi bi-file-earmark-pdf me-1"></i> Invoice
+            </a>
+            {% endif %}
+        </div>
+        <hr>
+
+        <!-- Order Summary -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="bi bi-info-circle me-2"></i>Order Summary
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 mb-2">
+                        <small class="text-muted d-block">Order ID</small>
+                        <strong>#{{ order.id }}</strong>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-2">
+                        <small class="text-muted d-block">Order Date</small>
+                        <strong>{{ order.order_date|date:"d M Y, h:i A" }}</strong>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-2">
+                        <small class="text-muted d-block">Status</small>
+                        <span class="order-status order-status--{{ order.status|lower }}">{{ order.status }}</span>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-2">
+                        <small class="text-muted d-block">Total Amount</small>
+                        <strong style="color:#34d399; font-size:1.1rem;">₹{{ order.total_amount }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Information -->
+        {% if order.address %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="bi bi-geo-alt me-2"></i>Shipping Address
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> {{ order.address.full_name }}</p>
+                <p><strong>Phone:</strong> {{ order.address.phone_number }}</p>
+                <p><strong>Address:</strong>
+                    {{ order.address.address_line1 }}{% if order.address.address_line2 %}, {{ order.address.address_line2 }}{% endif %},
+                    {{ order.address.landmark }},
+                    {{ order.address.city }},
+                    {{ order.address.state }} - {{ order.address.pincode }}
+                </p>
+                <p class="mb-0"><strong>Country:</strong> {{ order.address.country }}</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>No shipping address selected for this order.
+        </div>
+        {% endif %}
+
+        <!-- Order Items -->
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-bag me-2"></i>Ordered Items
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th style="padding:14px 18px;">Product</th>
+                                <th style="padding:14px 18px;">Quantity</th>
+                                <th style="padding:14px 18px;">Price</th>
+                                <th style="padding:14px 18px;">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for detail in order.order_details.all %}
+                            <tr>
+                                <td style="padding:14px 18px;">
+                                    <a href="{% url 'product_details' detail.order_item.id %}">
+                                        {{ detail.order_item.title }}
+                                    </a>
+                                    {% if detail.size %}
+                                    <br>
+                                    <small class="text-muted">Size: {{ detail.size }}</small>
+                                    {% endif %}
+                                </td>
+                                <td style="padding:14px 18px;">{{ detail.quantity }}</td>
+                                <td style="padding:14px 18px;">₹{{ detail.price|floatformat:2 }}</td>
+                                <td style="padding:14px 18px;">₹{{ detail.price }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <a href="{% url 'order_history_2' %}">
+            <i class="bi bi-arrow-left me-1"></i> Back to Orders
+        </a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+
+<section id="products-container" class="container my-4" data-add-url="{% url 'add_to_cart' %}">
+{% csrf_token %}
+    <div class="row g-4">
+        {% for product in products %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                {% include 'products/includes/productCard.html' %}
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-box-seam" style="font-size:56px; color:#707070;"></i>
+                <p class="text-muted mt-3">No products available.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</section>

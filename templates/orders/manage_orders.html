@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Manage Orders{% endblock %}
+
+{% block content %}
+<section class="order-history">
+
+    <div class="shopmore">
+        <h2 class="order-history__title mb-0">All Orders (Admin)</h2>
+    </div>
+
+    {% for order in orders %}
+    <article class="order-card">
+
+        <header class="order-card__header">
+            <span>
+                <i class="bi bi-receipt me-1"></i> Order #{{ order.id }}
+                <span class="ms-2 badge bg-secondary">{{ order.user.username }}</span>
+            </span>
+            <span>{{ order.order_date|date:"d M Y, H:i" }}</span>
+        </header>
+
+        <div class="order-card__body">
+            <p>
+                <strong>Status:</strong>
+                <span class="order-status order-status--{{ order.status|lower }}">
+                    {{ order.status }}
+                </span>
+            </p>
+            <p><strong>Total Amount:</strong> &#8377; {{ order.total_amount }}</p>
+            <p><strong>User:</strong> {{ order.user.email }}</p>
+        </div>
+
+        <footer class="order-card__footer">
+
+            {% if order.status == "PENDING" %}
+            <a href="{% url 'cancel_order' order.id %}"
+               class="order-btn order-btn--secondary">
+                <i class="bi bi-x-circle me-1"></i> Cancel
+            </a>
+            {% endif %}
+
+            <a href="{% url 'order_detail' order.id %}"
+               class="order-btn order-btn--secondary">
+                <i class="bi bi-eye me-1"></i> View Details
+            </a>
+
+            {% if order.status == "COMPLETED" %}
+            <a href="{% url 'order_invoice' order.id %}"
+               target="_blank"
+               class="order-btn order-btn--secondary">
+                <i class="bi bi-file-earmark-pdf me-1"></i> Invoice
+            </a>
+            {% endif %}
+
+        </footer>
+
+    </article>
+    {% empty %}
+    <div class="order-history__empty">
+        <i class="bi bi-inbox" style="font-size:64px; color:var(--text-muted); display:block; margin-bottom:20px;"></i>
+        <p>No orders found in the system.</p>
+    </div>
+    {% endfor %}
+
+</section>
+{% endblock %}
