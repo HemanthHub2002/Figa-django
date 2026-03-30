@@ -169,14 +169,12 @@ def cancel_order(request, order_id):
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
-from xhtml2pdf import pisa
+# from xhtml2pdf import pisa
 from orders.models import Order
+from django.http import HttpResponse
 
 def order_invoice(request, order_id):
-    if request.user.is_staff:
-        order = get_object_or_404(Order, id=order_id)
-    else:
-        order = get_object_or_404(Order, id=order_id, user=request.user)
+    return HttpResponse("Invoice generation is temporarily unavailable in this environment.")
 
     if order.status != "COMPLETED":
         return HttpResponseForbidden("Invoice available only after successful payment")
