@@ -121,6 +121,8 @@ def view_cart(request):
     return render(request,template, context)
 
 def get_cart_item_count(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'cart_count': 0})
     return JsonResponse({
         'cart_count' : CartItem.objects.filter(user = request.user).count()
-    })
+    })

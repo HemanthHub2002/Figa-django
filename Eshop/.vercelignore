@@ -1,0 +1,28 @@
+# Vercel Ignore File
+# Exclude from deployment
+
+# Project files
+.env
+.gitignore
+README.md
+LICENSE
+
+# Python / Django
+db.sqlite3
+media/
+staticfiles/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+venv/
+env/
+.venv/
+
+# IDE / Other
+.vscode/
+.idea/
+.git/
+.vercel
