@@ -1,10 +1,7 @@
-asgiref
 Django==4.2.27
-pillow
+gunicorn
 python-decouple
+whitenoise
+pillow
 razorpay
 requests
-sqlparse
-whitenoise
-gunicorn
-# Temporarily removed PDF dependencies to solve Vercel build failure.
