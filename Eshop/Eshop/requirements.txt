@@ -1,7 +1,0 @@
-Django==4.2.27
-whitenoise
-python-decouple
-razorpay
-requests
-pillow
-# Removed xhtml2pdf and reportlab temporarily to debug build failure.

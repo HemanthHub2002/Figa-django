@@ -1,7 +1,16 @@
+asgiref
 Django==4.2.27
-whitenoise
+pillow
 python-decouple
 razorpay
 requests
-pillow
-# Removed xhtml2pdf and reportlab temporarily to debug build failure.
+sqlparse
+whitenoise
+python-dateutil
+tzdata
+certifi
+charset-normalizer
+idna
+urllib3
+xhtml2pdf[renderpm]==0.2.14
+reportlab<4.0.0
